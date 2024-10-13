@@ -14,7 +14,10 @@ class ChatMessageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('receiver', HiddenType::class)
+            ->add('receiver', $options['is_hidden'] ? HiddenType::class : TextType::class, [
+                'mapped' => true,
+                'attr' => $options['is_hidden'] ? ['style' => 'display: none;'] : [],
+            ])
             ->add('message', TextType::class, [
                 'label' => 'Type your message:',
             ])
@@ -25,6 +28,7 @@ class ChatMessageType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Chat::class,
+            'is_hidden' => false,
         ]);
     }
 }

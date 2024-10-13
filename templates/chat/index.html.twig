@@ -19,8 +19,19 @@
     </div>
 
     {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <button type="submit" class="btn btn-primary">Send</button>
+        <div class="row">
+            <div class="col-2">{{ form_label(form.receiver) }}</div>
+            <div class="col-2">{{ form_widget(form.receiver) }}</div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-2">{{ form_label(form.message) }}</div>
+            <div class="col-2">{{ form_widget(form.message) }}</div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-2">
+                <button type="submit" class="btn btn-primary">Send</button>
+            </div>
+        </div>
     {{ form_end(form) }}
 </div>
 

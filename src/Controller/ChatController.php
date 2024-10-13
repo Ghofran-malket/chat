@@ -35,12 +35,12 @@ class ChatController extends AbstractController
 
         // Create and handle the chat message form
         $chat = new Chat();
-        $form = $this->createForm(ChatMessageType::class, $chat);
+        $form = $this->createForm(ChatMessageType::class, $chat, ['is_hidden' => true,]);
         $form->get('receiver')->setData($user); // Set receiver automatically
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $chat->setSender('YourUsername'); // Replace with actual username
+            $chat->setSender('Ghofran'); // Replace with actual username
             $chat->setTimestamp(new \DateTime());
 
             $this->entityManager->persist($chat);
@@ -57,7 +57,7 @@ class ChatController extends AbstractController
     }
 
     #[Route('/users/list', name:'_my_list_de_contact')]
-    public function sentUsers(): Response
+    public function sentUsers(Request $request): Response
     {
        // Fetch distinct users you have sent messages to
        $users = $this->chatRepository->findDistinctReceiversBySender('Ghofran');
@@ -66,9 +66,26 @@ class ChatController extends AbstractController
        $usernames = array_map(function($user) {
            return $user['receiver'];
        }, $users);
+
+       $chat = new Chat();
+        $form = $this->createForm(ChatMessageType::class, $chat , ['is_hidden' => false,]);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $chat->setSender('Ghofran'); // Replace with actual username
+            $chat->setTimestamp(new \DateTime());
+
+            $this->entityManager->persist($chat);
+            $this->entityManager->flush();
+
+            // Redirect back to chat view with the new recipient
+            return $this->redirectToRoute('chat_view', ['user' => $chat->getReceiver()]);
+        }
    
        return $this->render('chat/list.html.twig', [
            'usernames' => $usernames,
+           'form' => $form->createView(),
        ]);
    }
+
 }
