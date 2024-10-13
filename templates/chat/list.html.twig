@@ -1,0 +1,23 @@
+{# templates/chat/chat.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ChatController!{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <h1>Users You Have Messaged</h1>
+    <ul class="list-group">
+        {% for username in usernames %}
+            <li class="list-group-item">
+                <a href="{{ path('chat_view', {'user': username}) }}">{{ username }}</a>
+            </li>
+        {% else %}
+            <li class="list-group-item">You haven't sent messages to anyone yet.</li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}
+
