@@ -1,0 +1,28 @@
+{# templates/chat/chat.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ChatController!{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <h1>Chat with {{ user }}</h1>
+    <div class="chat-box">
+        {% for message in messages %}
+            <div class="message">
+                <strong>{{ message.sender }}:</strong> {{ message.message }} <em>{{ message.timestamp|date('Y-m-d H:i:s') }}</em>
+            </div>
+        {% else %}
+            <div class="message">No messages found.</div>
+        {% endfor %}
+    </div>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-primary">Send</button>
+    {{ form_end(form) }}
+</div>
+
+{% endblock %}
+
